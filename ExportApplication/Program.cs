@@ -9,9 +9,7 @@ builder.Services.AddRazorPages();
 var app = builder.Build();
 
 // Setup Rotativa dengan path yang benar
-var wkhtmlPath = Path.Combine(builder.Environment.WebRootPath, "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
-Console.WriteLine($"wkhtmltopdf.exe path: {wkhtmlPath}");
-RotativaConfiguration.Setup(builder.Environment.WebRootPath, "wkhtmltopdf/bin");
+RotativaConfiguration.Setup(builder.Environment.WebRootPath, "wkhtmltopdf/acc");
 
 if (!app.Environment.IsDevelopment())
 {
