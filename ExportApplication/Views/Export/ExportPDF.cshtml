@@ -1,14 +1,25 @@
-﻿@model dynamic
+﻿@model List<ExportApplication.Models.Employee>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Export PDF</title>
-</head>
-<body>
-    <h1>Export PDF Result</h1>
-    <p>Name: @Model.Name</p>
-    <p>Age: @Model.Age</p>
-</body>
-</html>
+<h2>Employee List (PDF)</h2>
+
+<table border="1" cellpadding="5" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Position</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.Id</td>
+                <td>@employee.Name</td>
+                <td>@employee.Age</td>
+                <td>@employee.Position</td>
+            </tr>
+        }
+    </tbody>
+</table>

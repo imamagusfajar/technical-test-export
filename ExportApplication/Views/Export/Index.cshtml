@@ -1,67 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Export Page";
+﻿@model List<ExportApplication.Models.Employee>
+
+@{
+    ViewData["Title"] = "Employee List";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background-color: #f8f9fa;
-        }
+<h2 class="text-center my-4">Employee List</h2>
 
-        h1 {
-            color: #343a40;
-        }
+<div class="table-responsive">
+    <table class="table table-striped table-hover shadow rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Position</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Name</td>
+                    <td>@employee.Age</td>
+                    <td>@employee.Position</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-        .button-container {
-            margin-top: 30px;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .btn-excel {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-pdf {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn:hover {
-            opacity: 0.8;
-        }
-        h3 {
-
-        }
-    </style>
-</head>
-<body>
-
-    <h1>Export Data</h1>
-    <div class="button-container">
-        <a href="@Url.Action("ExportToExcel", "Export")">
-            <button class="btn btn-excel">Export to Excel</button>
-        </a>
-        <a href="@Url.Action("ExportToPDF", "Export")">
-            <button class="btn btn-pdf">Export to PDF</button>
-        </a>
-    </div>
-
-</body>
-</html>
+<div class="button-container">
+    <a href="@Url.Action("ExportToExcel", "Export")">
+        <button class="btn btn-excel">Export to Excel</button>
+    </a>
+    <a href="@Url.Action("ExportToPDF", "Export")">
+        <button class="btn btn-pdf">Export to PDF</button>
+    </a>
+</div>
