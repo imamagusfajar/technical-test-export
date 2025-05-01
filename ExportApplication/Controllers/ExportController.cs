@@ -2,37 +2,52 @@
 using ClosedXML.Excel;
 using Rotativa.AspNetCore;
 using System.IO;
+using static ExportApplication.Repository.Interface.Interface;
 
 namespace ExportApplication.Controllers
 {
     public class ExportController : Controller
     {
+        private readonly IEmployeeRepository _employeeRepository;
+
+        public ExportController(IEmployeeRepository employeeRepository)
+        {
+            _employeeRepository = employeeRepository;
+        }
+
         // Action untuk halaman utama
         public IActionResult Index()
         {
-            return View();
+            var employees = _employeeRepository.GetAllEmployees();
+            return View(employees);
         }
 
         // Action untuk ekspor Excel
         public IActionResult ExportToExcel()
         {
-            // Membuat workbook baru dengan ClosedXML
+            var employees = _employeeRepository.GetAllEmployees();
             var workbook = new XLWorkbook();
-            var worksheet = workbook.Worksheets.Add("Data");
+            var worksheet = workbook.Worksheets.Add("Employees");
 
-            // Menambahkan header
-            worksheet.Cell("A1").Value = "Name";
-            worksheet.Cell("B1").Value = "Age";
+            worksheet.Cell(1, 1).Value = "Name";
+            worksheet.Cell(1, 2).Value = "Position";
+            worksheet.Cell(1, 3).Value = "Age";
 
-            // Menambahkan data
-            worksheet.Cell("A2").Value = "John Doe";
-            worksheet.Cell("B2").Value = 30;
+            int row = 2;
+            foreach (var emp in employees)
+            {
+                worksheet.Cell(row, 1).Value = emp.Name;
+                worksheet.Cell(row, 2).Value = emp.Position;
+                worksheet.Cell(row, 3).Value = emp.Age;
+                row++;
+            }
 
-            // Menyimpan dan mengunduh file Excel
             using (var stream = new MemoryStream())
             {
                 workbook.SaveAs(stream);
-                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DataExport.xlsx");
+                return File(stream.ToArray(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "Employees.xlsx");
             }
         }
 
@@ -41,13 +56,10 @@ namespace ExportApplication.Controllers
         {
             try
             {
-                // Model data untuk PDF
-                var model = new { Name = "John Doe", Age = 30 };
-
-                // Menggunakan Rotativa untuk menghasilkan PDF
-                return new ViewAsPdf("ExportPDF", model)
+                var employees = _employeeRepository.GetAllEmployees();
+                return new ViewAsPdf("ExportPDF", employees)
                 {
-                    FileName = "GeneratedPDF.pdf" // Nama file PDF yang akan diunduh
+                    FileName = "Employees.pdf"
                 };
             }
             catch (Exception ex)

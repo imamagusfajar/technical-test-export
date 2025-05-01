@@ -1,4 +1,6 @@
+using ExportApplication.Repository;
 using Rotativa.AspNetCore;
+using static ExportApplication.Repository.Interface.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 var app = builder.Build();
 
 // Setup Rotativa dengan path yang benar
